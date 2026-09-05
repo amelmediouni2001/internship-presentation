@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEEE TalentHub — Final Project Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<noscript><style>.a{opacity:1 !important;animation:none !important}.slide{display:flex !important;position:static !important}</style></noscript>
+<style>
+/* ============================================================
+   IEEE TALENTHUB — PRESENTATION
+   Single-file deck · HTML5 + CSS3 + Vanilla JS
+   Content matches the author's draft PDF (15 slides)
+   Dark "title page" theme applied across the whole deck
+   ============================================================ */
+
+/* ---------------- Design tokens ---------------- */
+:root{
+  --navy:#003B5C;
+  --navy-d:#041B2E;
+  --navy-x:#071E33;
+  --blue:#00629B;
+  --cyan:#00A6D6;
+  --ink:#12293C;
+  --mut:#587086;
+  --mlite:#8AA3B8;
+  --line:#D8E6F1;
+  --bg:#F2F7FB;
+  --card:#FFFFFF;
+  --green:#12A15A;
+  --amber:#F0A03A;
+  --ont:#EAF4FB;
+  --ont2:#B9D2E2;
+  --ont3:#8AA3B8;
+  --accent:#7FD4EE;
+  --shadow:0 12px 34px rgba(9,48,80,.10);
+  --shadow-lg:0 28px 70px rgba(6,42,72,.20);
+  --dshadow:0 18px 46px rgba(0,0,0,.24);
+  --r:18px;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --mono:'SF Mono',ui-monospace,Menlo,Consolas,monospace;
+  --bg-title:linear-gradient(158deg,#071E33 0%,#003B5C 55%,#07517a 100%);
+}
+
+/* ---------------- Base ---------------- */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:var(--font);overflow:hidden;background:var(--navy-d);color:var(--ont);-webkit-font-smoothing:antialiased}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------------- Deck & slide engine ---------------- */
+#deck{position:fixed;inset:0;background:var(--navy-d)}
+.slide{position:absolute;inset:0;display:none;overflow:hidden;
+  background:var(--bg-title)}
+.slide.active{display:flex;animation:slideEnter .6s cubic-bezier(.22,.61,.36,1) both}
+.slide.enter-left{animation-name:slideEnterLeft}
+.slide.leaving{display:flex;pointer-events:none}
+.slide.exit-right{animation:slideExitRight .45s ease both}
+.slide.exit-left{animation:slideExitLeft .45s ease both}
+
+@keyframes slideEnter{from{opacity:0;transform:translateX(74px)}to{opacity:1;transform:none}}
+@keyframes slideEnterLeft{from{opacity:0;transform:translateX(-74px)}to{opacity:1;transform:none}}
+@keyframes slideExitRight{from{opacity:1}to{opacity:0;transform:translateX(50px)}}
+@keyframes slideExitLeft{from{opacity:1}to{opacity:0;transform:translateX(-50px)}}
+
+.inner{width:100%;height:100%;max-width:1380px;margin:0 auto;
+  padding:clamp(26px,4.6vw,64px);display:flex;flex-direction:column;position:relative;z-index:2}
+.slide.dark .inner{color:var(--ont)}
+
+/* ---------------- Decorative layers (title-page theme) ---------------- */
+.dg{position:absolute;inset:0;pointer-events:none;z-index:1}
+.slide.dark .dg{
+  background-image:
+    radial-gradient(620px 460px at 10% 6%,rgba(0,166,214,.14),transparent 60%),
+    radial-gradient(760px 560px at 90% 94%,rgba(0,98,155,.34),transparent 60%),
+    linear-gradient(rgba(160,214,238,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(160,214,238,.05) 1px,transparent 1px),
+    radial-gradient(circle,rgba(160,214,238,.10) 1.1px,transparent 1.1px);
+  background-size:auto,auto,90px 90px,90px 90px,26px 26px}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+
+/* ---------------- Slide header ---------------- */
+.shead{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  margin-bottom:clamp(20px,2.8vw,40px);z-index:3}
+.kicker{display:inline-flex;align-items:center;gap:11px;font-family:var(--mono);
+  font-size:clamp(10px,1.1vw,13px);letter-spacing:.22em;text-transform:uppercase;
+  color:var(--blue);font-weight:600;white-space:nowrap}
+.kicker::before{content:"";width:28px;height:1.5px;background:var(--cyan);border-radius:2px}
+.slide.dark .kicker{color:var(--accent)}
+.title{font-size:clamp(28px,3.7vw,52px);line-height:1.05;font-weight:800;
+  letter-spacing:-.025em;color:var(--navy)}
+.slide.dark .title{color:#FFFFFF}
+.shead .lead{max-width:430px;font-size:clamp(12px,1.15vw,15px);color:var(--mut);line-height:1.55;
+  text-align:right}
+.slide.dark .shead .lead{color:var(--ont3)}
+.hair{position:relative;height:1px;margin:0 0 clamp(20px,2.6vw,34px);
+  background:linear-gradient(90deg,transparent,rgba(0,166,214,.6),transparent)}
+
+/* ---------------- Reusable components ---------------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);font-family:var(--mono);
+  font-size:clamp(10px,1vw,12px);font-weight:600;color:var(--ont);white-space:nowrap}
+.chip .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);flex:none}
+.chip.blue{background:linear-gradient(135deg,var(--blue),var(--cyan));border-color:transparent;color:#fff}
+.chip.cyan{background:rgba(0,166,214,.16);border-color:rgba(0,166,214,.45);color:var(--accent)}
+.chip.green{background:rgba(18,161,90,.14);border-color:rgba(18,161,90,.45);color:#58D69A}
+.num{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
+
+/* Dark card + text overrides for every component (title-page theme) */
+.slide.dark .card{background:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,.03));
+  border-color:rgba(255,255,255,.13);box-shadow:var(--dshadow)}
+.slide.dark .jt,.slide.dark .st-t,.slide.dark .t-name,.slide.dark .pt,.slide.dark .s6-t,
+.slide.dark .th-t,.slide.dark .tb-t,.slide.dark .tl-t,.slide.dark .rm-t,.slide.dark .rt,
+.slide.dark .pc-t,.slide.dark .ev-t,.slide.dark .k-b,.slide.dark .sp-t, .slide.dark .ss-t{color:#fff}
+.slide.dark .jc,.slide.dark .st-c,.slide.dark .t-tag,.slide.dark .pc,.slide.dark .s6-c,
+.slide.dark .tb-c,.slide.dark .tl-c,.slide.dark .rm-c,.slide.dark .rc,.slide.dark .s9-cap,
+.slide.dark .ev-c,.slide.dark .k-c,.slide.dark .sp-c,.slide.dark .ss-c{color:var(--ont2)}
+.slide.dark .t-role,.slide.dark .pic,.slide.dark .so-l,.slide.dark .th-n,.slide.dark .rm-next,
+.slide.dark .s9-pill small,.slide.dark .pair-card .pc-l,.slide.dark .k-a,.slide.dark .k-hd,
+.slide.dark .ss-sm{color:var(--accent)}
+
+/* Entrance animation helper — stagger via --d */
+.a{opacity:0;animation:rise .7s cubic-bezier(.22,.61,.36,1) forwards;
+  animation-delay:calc(150ms + var(--d,0)*90ms)}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+
+/* ---------------- Image placeholders ---------------- */
+.placeholder{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;border:1.6px dashed rgba(0,166,214,.55);border-radius:20px;color:var(--accent);
+  text-align:center;padding:22px;overflow:hidden;
+  background:linear-gradient(150deg,rgba(0,166,214,.10),rgba(0,98,155,.05));
+  box-shadow:inset 0 0 0 5px rgba(4,27,46,.4),0 20px 60px rgba(0,0,0,.25)}
+.placeholder::before,.placeholder::after{content:"";position:absolute;width:26px;height:26px;opacity:.55;
+  border-color:rgba(0,166,214,.55)}
+.placeholder::before{left:10px;top:10px;border-left:2px solid;border-top:2px solid;border-top-left-radius:8px}
+.placeholder::after{right:10px;bottom:10px;border-right:2px solid;border-bottom:2px solid;border-bottom-right-radius:8px}
+.placeholder .ph-icon{width:42px;height:42px;color:var(--cyan);opacity:.85}
+.placeholder .ph-label{font-family:var(--mono);font-size:clamp(10px,.95vw,11px);letter-spacing:.2em;
+  font-weight:700;text-transform:uppercase;line-height:1.5}
+.placeholder .ph-hint{font-size:11px;color:var(--ont3);letter-spacing:.02em}
+.ph-logo{width:174px;height:66px;border-radius:14px;padding:14px}
+.ph-photo{width:104px;height:104px;border-radius:50%;padding:18px}
+.ph-shot{width:100%;aspect-ratio:16/9;max-height:300px}
+.ph-demo{width:min(440px,78vw);aspect-ratio:1/1;border-radius:30px}
+
+/* ---------------- HUD (navigation chrome) ---------------- */
+.progress{position:fixed;top:0;left:0;right:0;height:4px;z-index:60;background:rgba(0,0,0,.25)}
+.progress i{display:block;height:100%;width:0%;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .38s cubic-bezier(.22,.61,.36,1)}
+.hud{position:fixed;inset:auto 0 0 0;height:56px;display:flex;align-items:center;justify-content:center;
+  gap:clamp(10px,1.6vw,22px);z-index:60;pointer-events:none;
+  background:linear-gradient(to top,rgba(6,24,40,.6),transparent)}
+.hud>*{pointer-events:auto}
+.nav-btn{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.12);color:#fff;display:grid;place-items:center;cursor:pointer;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:.2s}
+.nav-btn:hover{background:var(--blue);border-color:var(--blue);transform:translateY(-2px)}
+.nav-btn svg{width:18px;height:18px}
+.nav-btn:disabled{opacity:.35;cursor:default;transform:none;background:rgba(255,255,255,.08)}
+#counter{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:rgba(255,255,255,.9)}
+.dots{display:flex;align-items:center;gap:6px}
+.dots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.38);cursor:pointer;transition:.25s}
+.dots span.on{background:var(--cyan);transform:scale(1.5);box-shadow:0 0 10px rgba(0,166,214,.8)}
+#hint{position:fixed;bottom:64px;left:50%;transform:translateX(-50%);z-index:60;
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:rgba(255,255,255,.75);
+  background:rgba(6,24,40,.55);border:1px solid rgba(255,255,255,.18);padding:8px 16px;border-radius:999px;
+  backdrop-filter:blur(8px);transition:opacity .6s,transform .6s;pointer-events:none}
+#hint.off{opacity:0;transform:translateX(-50%) translateY(8px)}
+
+/* ============================================================
+   SLIDE 01 — TITLE  (dark, source of the deck theme)
+   ============================================================ */
+.s1 .orb-a{width:560px;height:560px;left:-140px;top:-160px;
+  background:radial-gradient(circle,rgba(0,166,214,.35),transparent 65%)}
+.s1 .orb-b{width:620px;height:620px;right:-180px;bottom:-220px;
+  background:radial-gradient(circle,rgba(0,98,155,.5),transparent 65%)}
+.s1 .inner{align-items:center;justify-content:space-between}
+.s1-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.s1-net{position:absolute;inset:0;width:100%;height:100%;opacity:.5;pointer-events:none}
+.s1-center{display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(14px,2vw,26px);max-width:980px}
+.s1-kicker{font-family:var(--mono);font-size:clamp(10px,1.15vw,13px);letter-spacing:.3em;color:var(--accent);text-transform:uppercase}
+.s1-title{font-size:clamp(52px,9.5vw,126px);line-height:.98;font-weight:800;letter-spacing:-.035em;
+  background:linear-gradient(180deg,#FFFFFF 40%,#9FD9F0);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;text-shadow:0 20px 60px rgba(0,166,214,.25)}
+.s1-sub{font-size:clamp(16px,2vw,24px);font-weight:600;color:#CFE6F3;letter-spacing:.01em}
+.s1-sub b{color:#8FE0F7;font-weight:700}
+.s1-meta{width:100%;max-width:1080px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+.meta-cell{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);border-radius:16px;
+  padding:14px 18px;text-align:center;backdrop-filter:blur(6px)}
+.meta-cell .k{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--accent);text-transform:uppercase}
+.meta-cell .v{font-size:clamp(13px,1.2vw,16px);font-weight:700;color:#fff;margin-top:5px}
+
+/* ============================================================
+   SLIDE 02 — PLAN  (roadmap)
+   ============================================================ */
+.roadmap{position:relative;height:clamp(380px,56vh,540px);width:100%;max-width:1280px;margin:0 auto;flex:none}
+.roadmap svg.rmline{position:absolute;left:2%;right:2%;top:50%;transform:translateY(-50%);
+  width:96%;height:40px;pointer-events:none}
+.rmlab{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--mono);
+  font-size:clamp(9px,.8vw,10px);letter-spacing:.2em;color:rgba(158,216,240,.65);font-weight:700}
+.rmlab.l{left:0;transform:translate(-8px,-50%)}
+.rmlab.r{right:0;transform:translate(8px,-50%)}
+.rm-stop{position:absolute;top:50%;transform:translate(-50%,-50%)}
+.rm-stop .rmdot{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--mono);font-weight:800;font-size:17px;color:#fff;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  border:2px solid rgba(255,255,255,.28);box-shadow:0 0 0 6px rgba(0,166,214,.12),0 0 26px rgba(0,166,214,.35)}
+.rm-stop .rmdot small{font-size:9px;letter-spacing:.1em;opacity:.85}
+.rm-card{position:absolute;left:50%;transform:translateX(-50%);width:min(236px,21vw);
+  padding:14px 16px;border-radius:15px;text-align:center}
+.rm-card::before{content:"";position:absolute;left:50%;border:7px solid transparent}
+.rm-card.up{top:-86px;text-align:center}
+.rm-card.up::before{bottom:-14px;transform:translateX(-50%);border-top-color:rgba(255,255,255,.16)}
+.rm-card.dn{top:74px;text-align:center}
+.rm-card.dn::before{top:-14px;transform:translateX(-50%);border-bottom-color:rgba(255,255,255,.16)}
+.rm-card .rm-t{font-size:clamp(12px,1.2vw,15px);font-weight:800;color:#fff;letter-spacing:.04em}
+.rm-card .rm-c{font-size:clamp(9.5px,.9vw,11px);color:var(--ont2);line-height:1.45;margin-top:4px}
+.rm-flag{position:absolute;left:0;top:50%;transform:translate(-30px,-50%);color:var(--cyan)}
+.rm-arrow{position:absolute;right:-22px;top:50%;transform:translateY(-50%);color:var(--accent)}
+
+/* ============================================================
+   SLIDE 03 — TEAM  (Scrum Master on top)
+   ============================================================ */
+.team-wrap{flex:1;display:flex;flex-direction:column;gap:clamp(16px,2.2vw,26px);justify-content:center}
+.t-lead{position:relative;display:flex;align-items:center;gap:clamp(16px,2vw,24px);
+  max-width:780px;width:100%;margin:0 auto;padding:clamp(18px,2vw,26px) clamp(20px,2.4vw,32px);
+  border-radius:22px;overflow:hidden;
+  background:linear-gradient(135deg,rgba(0,98,155,.5),rgba(0,59,92,.65));
+  border:1px solid rgba(255,255,255,.22);box-shadow:var(--dshadow)}
+.t-lead::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 18% 12%,rgba(0,166,214,.25),transparent 55%)}
+.t-lead .t-photo-wrap{position:relative;z-index:1;flex:none}
+.t-lead .ph-photo{width:94px;height:94px;margin:0}
+.t-lead .t-info{position:relative;z-index:1;display:flex;flex-direction:column;gap:3px;flex:1}
+.t-lead .t-name{font-size:clamp(20px,2vw,26px)}
+.t-lead .t-role{font-size:clamp(10px,1vw,12px)}
+.t-lead .t-tag{color:#CFE6F3;font-size:clamp(11px,1vw,13px)}
+.t-lead .sm-badge{position:absolute;right:clamp(16px,2vw,28px);top:50%;transform:translateY(-50%);
+  z-index:1;display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;
+  background:rgba(0,166,214,.18);border:1px solid rgba(0,166,214,.55);color:#8FE0F7;
+  font-family:var(--mono);font-size:clamp(9px,.85vw,10.5px);letter-spacing:.2em;font-weight:700;white-space:nowrap}
+.t-lead .sm-badge svg{width:14px;height:14px}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,26px);
+  max-width:1160px;width:100%;margin:0 auto}
+.team-card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;
+  padding:clamp(22px,2.6vw,34px) 18px;position:relative;overflow:hidden}
+.team-card::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));opacity:0;transition:.3s}
+.team-card:hover::after{opacity:1}
+.team-card .ph-photo{margin-bottom:14px}
+.t-name{font-size:clamp(16px,1.6vw,21px);font-weight:800;color:var(--navy)}
+.t-role{font-family:var(--mono);font-size:clamp(10px,1vw,12px);letter-spacing:.18em;
+  text-transform:uppercase;color:var(--blue);font-weight:600;margin-top:4px}
+.t-tag{margin-top:12px;font-size:clamp(10px,1vw,11.5px);color:var(--mut)}
+
+/* ============================================================
+   SLIDE 04 — PROBLEM  (centered)
+   ============================================================ */
+.prob-grid{flex:1;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;
+  gap:clamp(12px,1.5vw,20px);max-width:1280px;margin:0 auto;min-height:0}
+.pcard{position:relative;flex:1 1 330px;max-width:400px;
+  padding:clamp(18px,1.9vw,26px);display:flex;flex-direction:column;gap:10px;border-radius:18px}
+.pcard .pn{position:absolute;top:12px;right:16px;font-family:var(--mono);font-weight:800;
+  font-size:clamp(18px,2vw,26px);color:rgba(127,212,238,.28)}
+.pcard .pic{width:34px;height:34px;color:var(--accent)}
+.pcard .pt{font-size:clamp(13px,1.25vw,16px);font-weight:800;color:var(--navy);letter-spacing:.01em;
+  padding-right:26px}
+.pcard .pc{font-size:clamp(11px,1.05vw,13px);color:var(--mut);line-height:1.5;flex:1}
+.pcard.fill{background:linear-gradient(150deg,rgba(0,166,214,.24),rgba(0,59,92,.4));
+  border:1px solid rgba(0,166,214,.45);color:#fff}
+.pcard.fill .pt{color:#fff}
+.pcard.fill .pc{color:#CFE6F3}
+.pcard.fill .pic{color:#8FE0F7}
+.pcard.fill .pn{color:rgba(127,212,238,.35)}
+.pcard.fill::after{content:"";position:absolute;inset:0;border-radius:18px;pointer-events:none;
+  background:radial-gradient(circle at 85% 15%,rgba(0,166,214,.25),transparent 55%)}
+
+/* ============================================================
+   SLIDE 05 — SOLUTION
+   ============================================================ */
+.sol-flow{flex:1;display:grid;grid-template-columns:minmax(0,1.06fr) clamp(34px,3.4vw,54px) minmax(0,1.06fr);
+  gap:8px;min-height:0}
+.sol-col{display:flex;flex-direction:column;justify-content:space-between;min-height:0}
+.step{display:flex;align-items:center;gap:14px;padding:clamp(10px,1.1vw,14px) clamp(12px,1.4vw,18px);
+  border-radius:14px}
+.step .st-n{flex:none;width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+  font-family:var(--mono);font-weight:800;font-size:13px;color:#fff;
+  background:linear-gradient(135deg,var(--blue),var(--cyan))}
+.step .st-t{font-size:clamp(13px,1.25vw,16px);font-weight:800;color:var(--navy)}
+.step .st-c{font-size:clamp(10px,1.05vw,12px);color:var(--mut);line-height:1.4}
+.step.hot{border-color:rgba(0,166,214,.5);box-shadow:0 0 0 3px rgba(0,166,214,.08)}
+.flow-dn{display:flex;align-items:center;justify-content:center;color:var(--cyan);
+  height:clamp(16px,2.2vh,26px)}
+.sol-bridge{margin-top:auto;padding:18px 0 0;display:flex;align-items:center;justify-content:center;color:var(--cyan)}
+.sol-outcome{margin-top:clamp(14px,1.8vw,22px);display:flex;align-items:center;justify-content:space-between;
+  gap:14px;padding:clamp(12px,1.4vw,18px) clamp(16px,1.8vw,24px);border-radius:16px;flex:none}
+.sol-outcome .so-l{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--accent);
+  font-weight:700;text-transform:uppercase;white-space:nowrap}
+.sol-outcome .so-checks{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end}
+.so-check{display:flex;align-items:center;gap:8px;font-size:clamp(11px,1.05vw,13px);font-weight:600;color:var(--ont)}
+.so-check svg{width:16px;height:16px;color:#3FD98F;flex:none}
+
+/* ============================================================
+   SLIDES 06–09 — SPRINTS  (unified design)
+   deliverables list (left) + showcase pane (right)
+   ============================================================ */
+.sp-grid{flex:1;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);
+  gap:clamp(18px,2.4vw,34px);min-height:0}
+.sp-list{display:flex;flex-direction:column;gap:clamp(8px,1vw,12px);justify-content:center;min-height:0}
+.sp-item{display:flex;align-items:flex-start;gap:14px;padding:clamp(9px,1vw,13px) clamp(12px,1.3vw,18px);
+  border-radius:14px;position:relative}
+.sp-item .sp-idx{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  font-family:var(--mono);font-weight:800;font-size:13px;color:#fff;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  box-shadow:0 0 0 4px rgba(0,166,214,.12);position:relative;z-index:1}
+.sp-item .sp-idx small{font-size:8.5px;opacity:.85}
+.sp-item .sp-b{display:flex;flex-direction:column;gap:2px;padding-top:1px}
+.sp-item .sp-t{font-size:clamp(12.5px,1.25vw,16px);font-weight:800;letter-spacing:.02em;line-height:1.25}
+.sp-item .sp-c{font-size:clamp(10.5px,1vw,12px);color:var(--ont2);line-height:1.4}
+.sp-item.ghost .sp-idx{background:linear-gradient(135deg,rgba(0,98,155,.6),rgba(0,166,214,.45));
+  box-shadow:0 0 0 4px rgba(0,166,214,.07)}
+
+.sp-show{display:flex;flex-direction:column;gap:clamp(12px,1.4vw,18px);
+  padding:clamp(16px,1.9vw,26px);border-radius:22px;min-height:0;
+  background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.14);box-shadow:var(--dshadow);position:relative;overflow:hidden}
+.sp-show::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 88% 6%,rgba(0,166,214,.18),transparent 55%)}
+.sp-show-hd{display:flex;align-items:center;gap:11px;position:relative;z-index:1}
+.sp-show-hd .ss-ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none;
+  color:#fff;background:linear-gradient(135deg,var(--blue),var(--cyan))}
+.sp-show-hd .ss-ic svg{width:18px;height:18px}
+.sp-show-hd .ss-hd{font-family:var(--mono);font-size:clamp(10px,.95vw,11.5px);letter-spacing:.22em;
+  color:var(--accent);font-weight:700}
+.sp-show-hd .ss-chip{margin-left:auto}
+.sp-show-bd{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px;min-height:0}
+
+/* Sprint 1 showcase — foundation stack */
+.ss-stack{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ss-node{display:flex;align-items:center;gap:14px;width:min(340px,88%);padding:14px 18px;border-radius:16px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14)}
+.ss-node .ss-ic{flex:none;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+  color:#fff;background:linear-gradient(135deg,var(--blue),var(--cyan))}
+.ss-node .ss-ic svg{width:19px;height:19px}
+.ss-node .ss-t{font-size:clamp(13px,1.2vw,16px);font-weight:800}
+.ss-node .ss-c{font-size:clamp(10.5px,.95vw,12px);color:var(--ont2)}
+.ss-link{display:grid;place-items:center;color:var(--accent);height:22px}
+.ss-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+
+/* Sprint 2 showcase — lifecycle wheel */
+.wheel{position:relative;width:min(430px,100%);margin:0 auto;
+  height:clamp(300px,44vh,420px)}
+.wheel svg.lnb{position:absolute;inset:0;width:100%;height:100%}
+.ring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(82%,340px);height:clamp(230px,34vh,320px);border:1.5px dashed rgba(0,166,214,.5);border-radius:50%;
+  background:radial-gradient(circle,rgba(0,166,214,.06),transparent 62%);pointer-events:none}
+.rnode{position:absolute;transform:translate(-50%,-50%);width:128px;display:flex;flex-direction:column;
+  align-items:center;gap:3px;text-align:center}
+.rnode .rn{font-family:var(--mono);font-weight:800;font-size:12px;color:var(--accent)}
+.rnode .rt{font-size:10.5px;font-weight:800;letter-spacing:.05em;line-height:1.25}
+.rnode .rc{font-size:9px;line-height:1.3}
+.rhub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:150px;height:150px;
+  border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  text-align:center;color:#fff;background:radial-gradient(circle at 30% 25%,#0A7CBE,var(--navy) 62%);
+  border:1px solid rgba(255,255,255,.25);box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.rhub .rh-1{font-family:var(--mono);font-size:9px;letter-spacing:.26em;color:#8FE0F7}
+.rhub .rh-2{font-size:12.5px;font-weight:800;line-height:1.3}
+
+/* Sprint 3 showcase — kanban */
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1vw,14px);min-height:0;flex:1}
+.kcol{border-radius:14px;padding:clamp(10px,1vw,14px);display:flex;flex-direction:column;gap:10px;
+  background:rgba(9,48,80,.25);border:1px solid rgba(255,255,255,.12)}
+.kcol .k-hd{display:flex;align-items:center;justify-content:space-between;gap:6px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--accent);font-weight:700}
+.kcol .k-hd i{font-style:normal;font-size:9px;padding:2px 7px;border-radius:99px;
+  background:rgba(0,166,214,.2);color:var(--accent)}
+.kcard{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:10px;
+  padding:9px 10px;font-size:11px;font-weight:600;color:var(--ont);line-height:1.35;
+  box-shadow:0 3px 10px rgba(0,0,0,.2);display:flex;gap:8px;align-items:flex-start}
+.kcard .kd{flex:none;width:8px;height:8px;border-radius:3px;margin-top:2px}
+.kcard.ghost{border-style:dashed;color:var(--ont3);font-weight:500;box-shadow:none;background:transparent}
+.sync-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+
+/* Sprint 4 showcase — verification flow */
+.ss-flow{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ss-node.slim{width:min(300px,84%);padding:12px 16px}
+.ss-node.slim.hl{background:linear-gradient(135deg,var(--blue),var(--cyan));border-color:transparent}
+.ss-node.slim.hl .ss-c{color:#CFE6F3}
+
+/* ============================================================
+   SLIDE 10 — FROM CODE TO FELCLOUD PRODUCTION  (dark, mega)
+   ============================================================ */
+.sdev{background:linear-gradient(150deg,#081829 0%,#0A2C43 55%,#06465f 100%)}
+.sdev .orb-a{width:480px;height:480px;right:-140px;top:-120px;background:radial-gradient(circle,rgba(0,166,214,.28),transparent 65%)}
+.sdev .orb-b{width:520px;height:520px;left:-160px;bottom:-200px;background:radial-gradient(circle,rgba(0,98,155,.42),transparent 65%)}
+.mega{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(14px,1.8vw,24px);min-height:0}
+.band{display:flex;flex-direction:column;gap:10px}
+.band-l{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:clamp(11px,1.05vw,13px);
+  letter-spacing:.22em;color:var(--accent);font-weight:700;text-transform:uppercase;white-space:nowrap}
+.band-l::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(0,166,214,.5),transparent)}
+
+.ci-rows{display:flex;flex-direction:column;gap:10px}
+.ci-row{display:flex;align-items:stretch;gap:6px}
+.ci-st{flex:1;min-width:0;display:flex;align-items:center;gap:9px;padding:11px 10px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);
+  font-size:clamp(12px,1.05vw,14px);font-weight:700;color:var(--ont);line-height:1.22}
+.ci-st .ci-ic{flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;
+  color:#8FE0F7;background:rgba(0,166,214,.2)}
+.ci-st .ci-ic svg{width:13px;height:13px}
+.ci-st.ok{background:rgba(18,161,90,.15);border-color:rgba(18,161,90,.5)}
+.ci-st.ok .ci-ic{color:#58D69A;background:rgba(18,161,90,.3)}
+.ci-arr{flex:none;display:grid;place-items:center;color:var(--accent)}
+.ci-arr svg,.an-arr svg{animation:flowX 1.6s ease-in-out infinite}
+.ci-arr svg{width:16px;height:15px}
+.an-arr svg{width:16px;height:15px}
+@keyframes flowX{0%,100%{opacity:.45;transform:translateX(0)}50%{opacity:1;transform:translateX(5px)}}
+.ci-turn{display:flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--mono);font-size:clamp(10px,.95vw,12px);letter-spacing:.2em;color:rgba(158,216,240,.85)}
+.ci-turn svg{animation:flowDown 1.6s ease-in-out infinite}
+@keyframes flowDown{0%,100%{opacity:.45;transform:translateY(-3px)}50%{opacity:1;transform:translateY(3px)}}
+
+.arc-chain{display:flex;align-items:stretch;gap:8px}
+.anode{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;padding:11px 12px;border-radius:13px;
+  border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.05)}
+.anode .an-top{display:flex;align-items:center;gap:7px}
+.anode .an-ic{flex:none;width:25px;height:25px;border-radius:7px;display:grid;place-items:center;
+  color:#8FE0F7;background:rgba(0,166,214,.2)}
+.anode .an-ic svg{width:14px;height:14px}
+.anode .an-t{font-size:clamp(13px,1.2vw,16px);font-weight:800;color:#fff;line-height:1.2}
+.anode .an-s{font-size:clamp(10.5px,.95vw,12px);color:var(--ont3);line-height:1.35}
+.an-arr{flex:none;display:grid;place-items:center;color:var(--accent)}
+.an-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;padding:2px 8px;border-radius:99px;
+  align-self:flex-start;font-weight:700;white-space:nowrap}
+.an-tag.g{color:#58D69A;background:rgba(18,161,90,.16);border:1px solid rgba(18,161,90,.45)}
+.an-tag.a{color:#FFC46B;background:rgba(240,160,58,.16);border:1px solid rgba(240,160,58,.5)}
+.private-grp{flex:1.7;display:flex;align-items:center;gap:8px;border:1.5px dashed rgba(0,166,214,.5);
+  border-radius:14px;padding:7px}
+.private-grp .anode{border:none;background:rgba(0,166,214,.08)}
+.h-arrow{width:clamp(10px,1.2vw,20px);height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));
+  position:relative;flex:none}
+.h-arrow::after{content:"";position:absolute;right:-1px;top:50%;transform:translateY(-50%);
+  border:5px solid transparent;border-left-color:var(--cyan);border-right:none}
+
+.sec-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(12px,1.6vw,22px);align-items:stretch}
+.sec-minis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mini-sec{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);
+  font-size:clamp(11.5px,1vw,13.5px);font-weight:700;color:var(--ont)}
+.mini-sec .ms-ic{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+  color:#8FE0F7;background:rgba(0,166,214,.16);border:1px solid rgba(0,166,214,.35)}
+.mini-sec .ms-ic svg{width:13px;height:13px}
+.dstack{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:14px 16px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.045)}
+.dresult{display:flex;align-items:flex-start;gap:9px;font-size:clamp(11px,1vw,13px);color:#CFE6F3;line-height:1.5}
+.dresult svg{width:16px;height:16px;color:#3FD98F;flex:none;margin-top:2px}
+.stack-line{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.stack-line .sl-flag{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;font-weight:700;
+  color:var(--accent);white-space:nowrap}
+
+/* ============================================================
+   SLIDE 11 — PRODUCTION EVIDENCE + CHALLENGES SOLVED
+   ============================================================ */
+.ev-split{flex:1;display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(18px,2.4vw,32px);min-height:0}
+.ev-split .left-col{display:flex;flex-direction:column;gap:clamp(12px,1.4vw,18px);min-height:0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,1.4vw,18px)}
+.kpis2{grid-template-columns:repeat(2,1fr)}
+.kpi{display:flex;flex-direction:column;align-items:center;gap:3px;padding:clamp(14px,1.8vw,24px) 14px;
+  border-radius:18px;text-align:center;position:relative;overflow:hidden}
+.kpi .kpi-ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;margin-bottom:2px;
+  color:var(--accent);background:rgba(0,166,214,.16);border:1px solid rgba(0,166,214,.35)}
+.kpi .kpi-ic svg{width:15px;height:15px}
+.kpi .k-num{font-size:clamp(34px,4.2vw,58px);font-weight:800;line-height:1;letter-spacing:-.04em;
+  background:linear-gradient(160deg,#FFFFFF,var(--cyan));-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent}
+.kpi .k-a{font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;color:var(--accent);font-weight:700}
+.kpi .k-b{font-size:clamp(12px,1.15vw,15px);font-weight:800;color:var(--navy);line-height:1.2}
+.kpi .k-c{font-size:10px;color:var(--mut)}
+.kpi::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,166,214,.16),transparent 65%)}
+.ev-sec{display:flex;flex-direction:column;gap:8px}
+.ev-row{display:flex;align-items:center;gap:12px;padding:clamp(9px,1vw,13px) clamp(14px,1.5vw,20px);
+  border-radius:13px}
+.ev-row .ev-ic{flex:none;width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
+  color:#fff;background:linear-gradient(135deg,var(--green),#35C87D)}
+.ev-row .ev-ic svg{width:16px;height:16px}
+.ev-row .ev-t{font-size:clamp(12px,1.1vw,14px);font-weight:800;color:var(--navy)}
+.ev-row .ev-c{font-size:clamp(10px,.95vw,12px);color:var(--mut)}
+.ev-status{margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;font-weight:700;
+  color:#58D69A;background:rgba(18,161,90,.16);border:1px solid rgba(18,161,90,.45);
+  border-radius:99px;padding:5px 12px;white-space:nowrap}
+.right-col{display:flex;flex-direction:column;gap:10px;min-height:0;
+  border-left:1px solid rgba(255,255,255,.12);padding-left:clamp(14px,1.8vw,24px)}
+.pair{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(8px,1.2vw,14px);align-items:stretch}
+.pair.sm{margin-bottom:10px}
+.pair-card{display:flex;flex-direction:column;gap:5px;padding:clamp(10px,1.2vw,15px) clamp(13px,1.5vw,18px);
+  border-radius:14px}
+.pair-card .pc-ic{width:24px;height:24px}
+.pair-card .pc-ic svg{width:15px;height:15px}
+.pair-card .pc-l{font-family:var(--mono);font-size:8.5px;letter-spacing:.22em;font-weight:700}
+.pair-card.prob .pc-l{color:#FFC46B}
+.pair-card.sol .pc-l{color:#58D69A}
+.pair-card .pc-t{font-size:clamp(12.5px,1.2vw,15px);font-weight:800;color:var(--navy);line-height:1.3}
+.pair-card.prob{background:linear-gradient(150deg,rgba(240,160,58,.14),rgba(255,255,255,.03));
+  border-color:rgba(240,160,58,.45)}
+.pair-card.prob .pc-ic{color:#FFC46B}
+.pair-card.sol{background:linear-gradient(150deg,rgba(18,161,90,.14),rgba(255,255,255,.03));
+  border-color:rgba(18,161,90,.4)}
+.pair-card.sol .pc-ic{color:#58D69A}
+.pair-arr{display:grid;place-items:center;color:var(--accent)}
+.pair-arr svg{animation:flowX 1.5s ease-in-out infinite}
+.final-out{display:flex;align-items:center;justify-content:center;gap:14px;text-align:center;
+  padding:clamp(16px,2vw,26px);border-radius:18px;margin-top:auto;
+  background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;box-shadow:var(--shadow-lg);
+  border:1px solid rgba(0,166,214,.5);position:relative;overflow:hidden}
+.final-out::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
+.final-out .fo-1{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--accent);font-weight:700}
+.final-out .fo-2{font-size:clamp(15px,1.7vw,21px);font-weight:800;line-height:1.25;letter-spacing:-.01em}
+
+/* ============================================================
+   SLIDE 12 — PROJECT TIMELINE  (roadmap · Steps 100%)
+   ============================================================ */
+.tl-wrap{flex:1;display:flex;align-items:center;position:relative;min-height:0}
+.tl-wrap .roadmap{height:clamp(330px,50vh,470px);margin:0 auto}
+
+/* ============================================================
+   SLIDE 13 — PERSPECTIVES  (future horizon)
+   ============================================================ */
+.fut{position:relative;flex:1;min-height:0}
+.fut-sun{position:absolute;right:8%;top:4%;width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,166,214,.4),rgba(0,98,155,.12) 52%,transparent 70%);
+  filter:blur(4px);pointer-events:none}
+.fut-sun i{position:absolute;left:110%;top:50%;width:110px;height:2px;transform-origin:left center;
+  background:linear-gradient(90deg,rgba(0,166,214,.45),transparent);display:block}
+.fut-sun i:nth-child(1){transform:rotate(18deg)}
+.fut-sun i:nth-child(2){transform:rotate(0deg)}
+.fut-sun i:nth-child(3){transform:rotate(-18deg)}
+.fut svg.fpath{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.star{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(158,216,240,.7);
+  box-shadow:0 0 6px rgba(158,216,240,.8);pointer-events:none;animation:twinkle 2.6s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.35}50%{opacity:1}}
+.fut-node{position:absolute;width:min(300px,26vw);text-align:center;transform:translate(-50%,-50%)}
+.fut-node .fu-ic{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;margin:0 auto 10px;
+  color:#fff;background:linear-gradient(135deg,var(--blue),var(--cyan));
+  box-shadow:0 0 0 6px rgba(0,166,214,.14),0 0 22px rgba(0,166,214,.35)}
+.fut-node .fu-ic svg{width:23px;height:23px}
+.fut-node .fu-card{padding:14px 16px;border-radius:18px;
+  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.14);box-shadow:var(--dshadow)}
+.fut-node .fu-t{font-size:clamp(15px,1.5vw,19px);font-weight:800;color:#fff;margin-bottom:4px}
+.fut-node .fu-c{font-size:clamp(10.5px,1vw,12.5px);color:var(--ont2);line-height:1.55}
+.fut-node .fu-hor{display:inline-block;margin-bottom:9px;font-family:var(--mono);
+  font-size:8.5px;letter-spacing:.22em;padding:4px 10px;border-radius:99px;font-weight:700;
+  color:var(--accent);background:rgba(0,166,214,.16);border:1px solid rgba(0,166,214,.45)}
+.fut-horizon{position:absolute;right:2%;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;
+  align-items:center;gap:8px;font-family:var(--mono);color:rgba(158,216,240,.55);letter-spacing:.3em;font-size:9.5px}
+.fut-horizon svg{width:18px;height:18px;color:var(--accent);animation:flowX 2s ease-in-out infinite}
+.fut svg.fpath{filter:drop-shadow(0 0 8px rgba(0,166,214,.35))}
+.fut-glow{position:absolute;left:0;right:0;bottom:0;height:clamp(120px,26vh,230px);pointer-events:none;
+  background:radial-gradient(62% 100% at 50% 100%,rgba(0,166,214,.22),transparent 72%)}
+.fut-hill{position:absolute;left:0;right:0;bottom:-2px;width:100%;height:clamp(150px,32vh,270px);opacity:.62;z-index:0}
+.fut-hill svg{width:100%;height:100%;display:block}
+.fut-hill svg path{filter:drop-shadow(0 0 16px rgba(0,98,155,.4))}
+.fut-moon{position:absolute;left:72%;top:6%;width:46px;height:46px;border-radius:50%;
+  background:radial-gradient(circle at 32% 32%,#F2FAFF,#C9E7F6 55%,#7FBFE0);
+  box-shadow:0 0 34px rgba(158,216,240,.4);opacity:.92}
+.fut-moon::after{content:"";position:absolute;left:26px;top:9px;width:8px;height:8px;border-radius:50%;
+  background:rgba(8,44,72,.22)}
+.fut-shoot{position:absolute;right:14%;top:16%;width:130px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,rgba(158,216,240,.95),transparent);
+  box-shadow:0 0 12px rgba(158,216,240,.55);transform:rotate(-24deg);
+  animation:shoot 6.5s ease-in-out infinite}
+@keyframes shoot{0%,70%{opacity:0;transform:rotate(-24deg) translateX(0)}75%{opacity:1}
+  85%,100%{opacity:0;transform:rotate(-24deg) translateX(150px)}}
+.star.big{width:5px;height:5px;box-shadow:0 0 10px rgba(158,216,240,.9)}
+
+/* ============================================================
+   SLIDE 14 — DEMO  (dark, dramatic)
+   ============================================================ */
+.sdemo{background:radial-gradient(1200px 700px at 50% 40%,#0A3B63,#071E33 60%,#041426)}
+.sdemo .orb-a{width:640px;height:640px;left:50%;top:48%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(0,166,214,.28),transparent 62%)}
+.sdemo .dg{opacity:.5}
+.sdemo .inner{align-items:center;justify-content:center;text-align:center;gap:clamp(14px,2vw,26px)}
+.demoframe{position:relative;width:min(980px,98%);border-radius:18px;overflow:hidden;margin:0 auto;
+  border:1px solid rgba(255,255,255,.22);background:#000;box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 60px rgba(0,166,214,.16);
+  animation:demoGlow 3.4s ease-in-out infinite}
+.demovid{display:block;width:100%;height:auto;border-radius:18px}
+.demoframe .live-chip{position:absolute;top:12px;left:12px;z-index:2;display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--mono);font-size:9px;letter-spacing:.22em;font-weight:700;color:#fff;
+  padding:5px 11px;border-radius:99px;background:rgba(4,27,46,.6);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(4px)}
+.demoframe .live-chip i{width:7px;height:7px;border-radius:50%;background:#FF5A5A;box-shadow:0 0 8px rgba(255,90,90,.9);
+  animation:twinkle 1.4s ease-in-out infinite}
+.democap{font-family:var(--mono);font-size:clamp(9px,.9vw,11px);letter-spacing:.24em;
+  color:rgba(158,216,240,.7);text-align:center}
+@keyframes demoGlow{0%,100%{box-shadow:inset 0 0 0 5px rgba(4,27,46,.4),0 0 0 1px rgba(0,166,214,.35),0 26px 80px rgba(0,0,0,.5),0 0 60px rgba(0,166,214,.18)}
+  50%{box-shadow:inset 0 0 0 5px rgba(4,27,46,.4),0 0 0 1px rgba(0,166,214,.6),0 26px 80px rgba(0,0,0,.5),0 0 90px rgba(0,166,214,.4)}}
+
+/* ============================================================
+   SLIDE 15 — THANK YOU  (dark)
+   ============================================================ */
+.sthanks{background:radial-gradient(1100px 700px at 50% 20%,#0A3B63,#071E33 60%,#041426)}
+.sthanks .orb-a{width:560px;height:560px;left:50%;top:55%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(0,166,214,.24),transparent 62%)}
+.sthanks .inner{align-items:center;justify-content:center;text-align:center;gap:clamp(16px,2.2vw,28px)}
+.sthanks .s1-title{font-size:clamp(48px,8vw,104px)}
+.sthanks .s1-sub{font-size:clamp(15px,1.7vw,20px)}
+.sthanks .qa-clip{font-family:var(--mono);font-size:clamp(10px,1vw,12px);letter-spacing:.26em;
+  color:var(--accent);text-transform:uppercase}
+
+/* ---------------- Real product images ---------------- */
+.logo-img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 6px 16px rgba(0,0,0,.2))}
+.slot{display:grid;place-items:center;overflow:hidden;background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.14);border-radius:16px}
+.slot.ph-photo{padding:0;border-radius:14px;background:rgba(4,27,46,.45)}
+.slot.ph-logo{padding:8px}
+.logo-card{background:#fff;border:none;box-shadow:0 10px 28px rgba(0,0,0,.35)}
+.s1 .slot.ph-logo{width:136px;height:62px;padding:9px}
+.s1 .logo-sm{width:118px;height:48px;padding:8px}
+.s1-logos{display:flex;gap:10px;align-items:center}
+.team-photo{width:100%;height:100%;object-fit:cover;object-position:center;
+  border:2px solid rgba(255,255,255,.3);border-radius:14px;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.team-card .slot.ph-photo{width:112px;height:140px;flex:none}
+.t-lead .slot.ph-photo{width:106px;height:106px;flex:none}
+.ev-cols{flex:1;display:flex;flex-direction:column;gap:clamp(12px,1.4vw,18px);min-height:0}
+.ev-strip{flex:none;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.6vw,22px)}
+.evshot{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;
+  background:#041426;border:1px solid rgba(255,255,255,.16);box-shadow:var(--dshadow)}
+.evshot img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.evshot .sh-cap{position:absolute;left:0;right:0;bottom:0;padding:30px 14px 11px;z-index:1;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:8px;
+  background:linear-gradient(180deg,transparent,rgba(4,27,46,.82))}
+.evshot .sh-cap b{font-size:clamp(12px,1.15vw,14.5px);color:#fff;letter-spacing:.06em;font-weight:800}
+.evshot .ev-status{position:absolute;top:10px;right:10px;z-index:1;background:rgba(4,27,46,.55)}
+.ch-band{flex:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(250px,auto);
+  gap:clamp(10px,1.1vw,14px);align-items:stretch}
+.pcol{display:flex;flex-direction:column;gap:6px;min-width:0}
+.pcol .p-arr{flex:none;display:grid;place-items:center;height:16px;color:var(--accent)}
+.pcol .p-arr svg{width:14px;height:14px;animation:flowDown 1.6s ease-in-out infinite}
+.pcol .pair-card{flex:1}
+.final-out.slim{padding:12px 16px}
+.final-out.slim .fo-2{font-size:clamp(12px,1.2vw,15.5px)}
+.kpi-strip{flex:none;display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(10px,1.2vw,16px);margin-top:clamp(12px,1.4vw,18px)}
+.kpi-strip .kpi{flex-direction:row;align-items:center;gap:13px;text-align:left;
+  padding:12px 16px;justify-content:flex-start}
+.kpi-strip .kpi .kpi-ic{width:32px;height:32px;margin-bottom:0;flex:none}
+.kpi-strip .kpi .k-num{font-size:clamp(24px,2.5vw,36px)}
+.kpi-strip .kpi::after{display:none}
+.kpi-strip .kpi .k-body{display:flex;flex-direction:column;line-height:1.2}
+.kpi-strip .kpi .k-ln{font-family:var(--mono);font-size:9px;letter-spacing:.16em;
+  color:var(--accent);font-weight:700;white-space:nowrap}
+.kpi-strip .kpi .k-c{font-size:10px;color:var(--ont3)}
+.stack-logo{height:13px;width:auto;vertical-align:-2px}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width:960px){
+  .inner{padding:24px}
+  .ph-hint{display:none}
+  .s1-meta{grid-template-columns:repeat(2,1fr)}
+  .team-grid{grid-template-columns:repeat(2,1fr)}
+  .sp-grid{grid-template-columns:1fr;overflow-y:auto}
+  .ev-cols{flex:1 0 auto;overflow-y:auto}
+  .ev-strip{grid-template-columns:1fr}
+  .ch-band{grid-template-columns:1fr}
+  .right-col{border-left:none;padding-left:0;border-top:1px solid rgba(255,255,255,.12);padding-top:14px}
+  .sec-minis,.arc-chain{grid-template-columns:1fr}
+  .ci-row{flex-wrap:wrap}
+  .kpi-strip{grid-template-columns:repeat(2,1fr)}
+  .rm-card{width:min(200px,26vw)}
+}
+@media (max-width:680px){
+  .team-grid{grid-template-columns:1fr}
+  .kpis2{grid-template-columns:1fr}
+  .roadmaps,.sec-cards{grid-template-columns:1fr}
+  .tl{grid-template-columns:repeat(2,1fr)}
+  .tl-track{display:none}
+  .prob-grid .pcard{flex-basis:100%;max-width:100%}
+  .fut-node{width:min(280px,74vw)}
+  .s1-logos{flex-direction:column;gap:8px}
+  .s1 .slot.ph-logo{width:170px;height:70px}
+  .s1 .logo-sm{width:150px;height:62px}
+  .ev-strip{grid-template-columns:1fr}
+  .ch-band{grid-template-columns:1fr}
+  .kpi-strip{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     ICON SPRITE (inline SVG symbols)
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="8.5" cy="8.5" r="1.6" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="m21 15-5-5L5 21" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-org" viewBox="0 0 24 24"><path d="M3 21h18M5 21V5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v16M14 21V9h5a1 1 0 0 1 1 1v11M8 7h2M8 10h2M8 13h2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></symbol>
+    <symbol id="i-case" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+    <symbol id="i-cube" viewBox="0 0 24 24"><path d="m21 16-9 5-9-5V8l9-5 9 5v8Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/><path d="m3 8 9 5 9-5" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M12 13v8" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 1-3-7.14" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M22 4v4h-4" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shieldcheck" viewBox="0 0 24 24"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/><path d="m9 11.5 2 2 4-4" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777Zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+    <symbol id="i-kanban" viewBox="0 0 24 24"><path d="M5 4v16M12 4v16M19 4v16M3 4h18" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-branch" viewBox="0 0 24 24"><path d="M6 3v12M6 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="18" cy="6" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M18 6v3a4 4 0 0 1-4 4H6" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M18 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm0 0v-2" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M5 19a8 8 0 1 1 14 0M12 18l3.5-5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="12" cy="18" r="1.4" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+    <symbol id="i-archive" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="5" rx="1" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M15.5 13 17 22l-5-3-5 3 1.5-9" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M11 18h2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6M16 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a5 5 0 0 0-6.6 6.6L3 18l3 3 5.1-5.1a5 5 0 0 0 6.6-6.6L14 13l-3-3 3.7-3.7Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></symbol>
+    <symbol id="i-userplus" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M19 8v6M22 11h-6" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-checkb" viewBox="0 0 24 24"><path d="M12 21s-6-2.4-9-6V5l9-4 9 4v10c-3 3.6-9 6-9 6Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/><path d="m8.5 11.5 2 2 4-4" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chevdn" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chevrn" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="m7 9 3 3-3 3M12 15h5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="7" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><rect x="2" y="14" width="20" height="7" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M6 6.5h.01M6 17.5h.01" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18Z" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 22V4M5 4c4-3 8 3 14 0v8c-6 3-10-3-14 0" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M8 17v-6M13 17V8M18 17v-9" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8" fill="none"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 5.6a5.5 5.5 0 0 0-7.8 0L12 6.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 22l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></symbol>
+    <symbol id="i-timer" viewBox="0 0 24 24"><path d="M10 2h4M12 14l3-3" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+  </defs>
+</svg>
+
+<div id="deck">
+
+  <!-- ============================================================
+       SLIDE 01 — TITLE
+       ============================================================ -->
+  <section class="slide dark s1 active" id="s1">
+    <span class="dg"></span>
+    <span class="orb orb-a"></span>
+    <span class="orb orb-b"></span>
+    <svg class="s1-net" viewBox="0 0 1440 810" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g fill="none" stroke="#7FD4EE" stroke-opacity=".18" stroke-width="1">
+        <path d="M120 200 L340 150 L560 240 L720 120 L900 210 L1120 150 L1320 220"/>
+        <path d="M120 620 L300 560 L520 660 L740 540 L980 640 L1200 560 L1320 620"/>
+      </g>
+      <g fill="#7FD4EE" fill-opacity=".45">
+        <circle cx="120" cy="200" r="3"/><circle cx="560" cy="240" r="3"/><circle cx="900" cy="210" r="3"/><circle cx="1320" cy="220" r="3"/>
+        <circle cx="300" cy="560" r="3"/><circle cx="740" cy="540" r="3"/><circle cx="1200" cy="560" r="3"/>
+      </g>
+    </svg>
+    <div class="inner">
+      <div class="s1-top a" style="--d:0">
+        <figure class="slot ph-logo logo-card">
+          <img class="logo-img" src="IEEE%20Tunisia%20Section%20TAC.png" alt="IEEE Tunisia Section TAC logo">
+        </figure>
+        <div class="s1-kicker">Final Internship Project · Defense</div>
+        <div class="s1-logos">
+          <figure class="slot ph-logo logo-card logo-sm">
+            <img class="logo-img" src="odclogo.png" alt="ODC logo">
+          </figure>
+          <figure class="slot ph-logo logo-card logo-sm">
+            <img class="logo-img" src="felcloud-logo.png" alt="FelCloud logo">
+          </figure>
+        </div>
+      </div>
+
+      <div class="s1-center">
+        <div class="s1-kicker a" style="--d:1">IEEE Student Branch · Software Engineering</div>
+        <h1 class="s1-title a" style="--d:2">IEEE TALENT&nbsp;HUB</h1>
+        <p class="s1-sub a" style="--d:3">Your Platform to <b>Create</b>, <b>Innovate</b> and <b>Shine</b>.</p>
+      </div>
+
+      <div class="s1-meta a" style="--d:4">
+        <div class="meta-cell"><div class="k">Team</div><div class="v">4 Members</div></div>
+        <div class="meta-cell"><div class="k">Method</div><div class="v">Agile · 4 Sprints</div></div>
+        <div class="meta-cell"><div class="k">Delivery</div><div class="v">Cloud Production</div></div>
+        <div class="meta-cell"><div class="k">Status</div><div class="v">Live &amp; Observable</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 02 — PLAN  (roadmap)
+       ============================================================ -->
+  <section class="slide dark" id="s2">
+    <span class="dg"></span>
+    <div class="inner">
+      <header class="shead">
+        <div>
+          <span class="kicker">00 / Roadmap</span>
+          <h2 class="title">Plan</h2>
+        </div>
+        <p class="lead">The journey from problem to product — four sprints, one live deployment.</p>
+      </header>
+      <span class="hair"></span>
+      <div class="roadmap">
+        <svg class="rmline" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="0" y1="20" x2="1180" y2="20" stroke="#00A6D6" stroke-width="2" stroke-dasharray="7 9" stroke-linecap="round" opacity=".8"/>
+          <path d="M1172 14l10 6 -10 6" fill="none" stroke="#7FD4EE" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="rmlab l">Start</span>
+
+        <div class="rm-stop a" style="--d:0;left:8%">
+          <span class="rmdot">01</span>
+          <div class="rm-card up card"><div class="rm-t">PROBLEM</div><div class="rm-c">The challenges that motivated the project.</div></div>
+        </div>
+        <div class="rm-stop a" style="--d:1;left:22.5%">
+          <span class="rmdot">02</span>
+          <div class="rm-card dn card"><div class="rm-t">SOLUTION</div><div class="rm-c">A centralized platform concept.</div></div>
+        </div>
+        <div class="rm-stop a" style="--d:2;left:37%">
+          <span class="rmdot">03</span>
+          <div class="rm-card up card"><div class="rm-t">SPRINTS</div><div class="rm-c">Four sprints from foundation to showcase.</div></div>
+        </div>
+        <div class="rm-stop a" style="--d:3;left:51.5%">
+          <span class="rmdot">04</span>
+          <div class="rm-card dn card"><div class="rm-t">SYSTEM ARCHITECTURE</div><div class="rm-c">Frontend, backend, data and integrations.</div></div>
+        </div>
+        <div class="rm-stop a" style="--d:4;left:66%">
+          <span class="rmdot">05</span>
+          <div class="rm-card up card"><div class="rm-t">PROJECT TIMELINE</div><div class="rm-c">Four milestones across the internship.</div></div>
+        </div>
+        <div class="rm-stop a" style="--d:5;left:80.5%">
+          <span class="rmdot">06</span>
+          <div class="rm-card dn card"><div class="rm-t">PERSPECTIVES</div><div class="rm-c">What comes next for TalentHub.</div></div>
+        </div>
+        <div class="rm-stop a" style="--d:6;left:93.5%">
+          <span class="rmdot">07</span>
+          <div class="rm-card up card"><div class="rm-t">DEMO</div><div class="rm-c">A live walkthrough of the platform.</div></div>
+        </div>
+        <span class="rmlab r">Live</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 03 — TEAM  (Scrum Master on top)
+       ============================================================ -->
+  <section class="slide dark" id="s3">
+    <span class="dg"></span>
+    <div class="inner">
+      <header class="shead">
+        <div>
+          <span class="kicker">01 / Team</span>
+          <h2 class="title">Team</h2>
+        </div>
+        <p class="lead">Four roles, one shared mission: building TalentHub end-to-end.</p>
+      </header>
+      <span class="hair"></span>
+      <div class="team-wrap">
+        <div class="t-lead a" style="--d:0">
+          <span class="t-photo-wrap">
+            <figure class="slot ph-photo">
+              <img class="team-photo lead" src="Hamza_Mellouli.png" alt="Hamza Mellouli">
+            </figure>
+          </span>
+          <span class="t-info">
+            <span class="t-name">Hamza Mellouli</span>
+            <span class="t-role">Scrum Master</span>
+            <span class="t-tag">Agile flow &amp; coordination · sprint ceremonies &amp; delivery</span>
+          </span>
+          <span class="sm-badge"><svg><use href="#i-star"/></svg>Scrum Master</span>
+        </div>
+        <div class="team-grid">
+          <div class="team-card card a" style="--d:1">
+            <figure class="slot ph-photo">
+              <img class="team-photo" src="amel_mediouni.jpeg" alt="Amel Mediouni" style="object-position:50% 13%">
+            </figure>
+            <span class="t-name">Amel Mediouni</span>
+            <span class="t-role">Web Developer</span>
+            <span class="t-tag">Frontend &amp; product experience</span>
+          </div>
+          <div class="team-card card a" style="--d:2">
+            <figure class="slot ph-photo">
+              <img class="team-photo" src="aziz_mimouna.jpg" alt="Aziz Mimouna" style="object-position:50% 45%">
+            </figure>
+            <span class="t-name">Aziz Mimouna</span>
+            <span class="t-role">Web Developer</span>
+            <span class="t-tag">API &amp; application logic</span>
+          </div>
+          <div class="team-card card a" style="--d:3">
+            <figure class="slot ph-photo">
+              <img class="team-photo" src="ranim_mejri.jpeg" alt="Ranym Mejri" style="object-position:50% 13%">
+            </figure>
+            <span class="t-name">Ranym Mejri</span>
+            <span class="t-role">Cloud &amp; DevOps</span>
+            <span class="t-tag">Infrastructure, CI/CD &amp; production</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 04 — PROBLEM  (centered)
+       ============================================================ -->
+  <section class="slide dark" id="s4">
+    <span class="dg"></span>
+    <div class="inner">
+      <header class="shead">
+        <div>
+          <span class="kicker">02 / Problem</span>
+          <h2 class="title">The Problem</h2>
+        </div>
+        <p class="lead">Student organizations and development teams face several challenges.</p>
+      </header>
+      <span class="hair"></span>
+      <div class="prob-grid">
+        <div class="pcard card a" style="--d:0">
+          <span class="pn">01</span>
+          <svg class="pic"><use href="#i-org"/></svg>
+          <span class="pt">Difficult to organize collaborative projects</span>
+          <span class="pc">Coordinating multi-member projects across teams is slow and unstructured.</span>
+        </div>
+        <div class="pcard card a" style="--d:1">
+          <span class="pn">02</span>
+          <svg class="pic"><use href="#i-users"/></svg>
+          <span class="pt">Hard to know who contributed</span>
+          <span class="pc">No clear visibility into who actually did the work.</span>
+        </div>
+        <div class="pcard fill a" style="--d:2">
+          <span class="pn">03</span>
+          <svg class="pic"><use href="#i-check"/></svg>
+          <span class="pt">Contributions are often evaluated manually</span>
+          <span class="pc">Time-consuming checks that rarely reflect real effort.</span>
+        </div>
+        <div class="pcard card a" style="--d:3">
+          <span class="pn">04</span>
+          <svg class="pic"><use href="#i-case"/></svg>
+          <span class="pt">Weak student portfolios</span>
+          <span class="pc">Portfolios do not reflect the students' real work.</span>
+        </div>
+        <div class="pcard card a" style="--d:4">
+          <span class="pn">05</span>
+          <svg class="pic"><use href="#i-layers"/></svg>
+          <span class="pt">No centralized platform</span>
+          <span class="pc">No single place to manage projects, teams, tasks and achievements.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 05 — SOLUTION
+       ============================================================ -->
+  <section class="slide dark" id="s5">
+    <span class="dg"></span>
+    <div class="inner">
+      <header class="shead">
+        <div>
+          <span class="kicker">03 / Solution</span>
+          <h2 class="title">The Solution</h2>
+        </div>
+        <p class="lead">A centralized platform that turns GitHub work into verified, public growth.</p>
+      </header>
+      <span class="hair"></span>
+
+      <div class="sol-flow">
+        <div class="sol-col">
+          <div class="step card a" style="--d:0"><span class="st-n">01</span><div><div class="st-t">CREATE&nbsp;PROJECT</div><div class="st-c">Organizations create projects</div></div></div>
+          <div class="flow-dn"><svg width="16" height="16"><use href="#i-chevdn"/></svg></div>
+          <div class="step card a" style="--d:1"><span class="st-n">02</span><div><div class="st-t">APPLY</div><div class="st-c">Contributors apply to join projects</div></div></div>
+          <div class="flow-dn"><svg width="16" height="16"><use href="#i-chevdn"/></svg></div>
+          <div class="step card a" style="--d:2"><span class="st-n">03</span><div><div class="st-t">ASSIGN TASKS</div><div class="st-c">Managers assign tasks to the team</div></div></div>
+          <div class="flow-dn"><svg width="16" height="16"><use href="#i-chevdn"/></svg></div>
+          <div class="step card hot a" style="--d:3"><span class="st-n">04</span><div><div class="st-t">GITHUB ACTIVITY</div><div class="st-c">Synchronized automatically</div></div></div>
+        </div>
+
+        <div class="sol-bridge" aria-hidden="true">
+          <svg width="30" height="18"><use href="#i-chevrn"/></svg>
+        </div>
+
+        <div class="sol-col">
+          <div class="step card a" style="--d:7"><span class="st-n">08</span><div><div class="st-t">SHOWCASE</div><div class="st-c">Completed projects showcased publicly</div></div></div>
+          <div class="flow-dn"><svg width="16" height="16" style="transform:rotate(180deg)"><use href="#i-chevdn"/></svg></div>
+          <div class="step card a" style="--d:6"><span class="st-n">07</span><div><div class="st-t">BUILD PORTFOLIO</div><div class="st-c">Updated automatically from real work</div></div></div>
+          <div class="flow-dn"><svg width="16" height="16" style="transform:rotate(180deg)"><use href="#i-chevdn"/></svg></div>
+          <div class="step card a" style="--d:5"><span class="st-n">06</span><div><div class="st-t">EARN XP</div><div class="st-c">XP is awarded per contribution</div></div></div>
+          <div class="flow-dn"><svg width="16" height="16" style="transform:rotate(180deg)"><use href="#i-chevdn"/></svg></div>
+          <div class="step card hot a" style="--d:4"><span class="st-n">05</span><div><div class="st-t">VERIFY CONTRIBUTION</div><div class="st-c">Contributions are verified</div></div></div>
+        </div>
+      </div>
+
+      <div class="sol-outcome card a" style="--d:8">
+        <span class="so-l">Outcome · One Platform</span>
+        <div class="so-checks">
+          <span class="so-check"><svg><use href="#i-check"/></svg>Verified contributions</span>
+          <span class="so-check"><svg><use href="#i-check"/></svg>Automatic portfolios</span>
+          <span class="so-check"><svg><use href="#i-check"/></svg>Public showcase</span>
+          <span class="so-check"><svg><use href="#i-check"/></svg>Centralized collaboration</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 06 — SPRINT 1  (unified sprint layout)
+       ============================================================ -->
+  <section class="slide dark" id="s6">
+    <span class="dg"></span>
+    <div class="inner">
+      <header class="shead">
+        <div>
+          <span class="kicker">04 / Sprint 01 · Foundation</span>
+          <h2 class="title">Product Foundation</h2>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-end">
+          <span class="chip blue">SPRINT 1 / 4</span>
+        </div>
+      </header>
+      <span class="hair"></span>
+      <div class="sp-grid">
+        <div class="sp-list">
+          <div class="sp-item card a" style="--d:0"><span class="sp-idx">01</span><span class="sp-b"><span class="sp-t">Product Setup</span><span class="sp-c">Next.js + NestJS + Prisma</span></span></div>
+          <div class="sp-item card a" style="--d:1"><span class="sp-idx">02</span><span class="sp-b"><span class="sp-t">CI / CD Pipeline</span><span class="sp-c">Biome + TypeScript checks</span></span></div>
+          <div class="sp-item card a" style="--d:2"><span class="sp-idx">03</span><span class="sp-b"><span class="sp-t">API Documentation</span><span class="sp-c">Swagger integration</span></span></div>
+          <div class="sp-item card a" style="--d:3"><span class="sp-idx">04</span><span class="sp-b"><span class="sp-t">Role Management</span><span class="sp-c">Admin &amp; Member permissions</span></span></div>
+          <div class="sp-item card a" style="--d:4"><span class="sp-idx">05</span><span class="sp-b"><span class="sp-t">Authentication</span><span class="sp-c">JWT + secure access</span></span></div>
+          <div class="sp-item card a" style="--d:5"><span class="sp-idx">06</span><span class="sp-b"><span class="sp-t">Database Design</span><span class="sp-c">Prisma models &amp; relationships</span></span></div>
+        </div>
+
+        <div class="sp-show a" style="--d:1">
+          <div class="sp-show-hd">
+            <span class="ss-ic"><svg><use href="#i-cube"/></svg></span>
+            <span class="ss-hd">Foundation · Stack ready</span>
+            <span class="chip green ss-chip">DONE</span>
+          </div>
+          <div class="sp-show-bd">
+            <div class="ss-stack">
+              <div class="ss-node"><span class="ss-ic"><svg><use href="#i-code"/></svg></span><span><span class="ss-t">App Services</span><br><span class="ss-c">Next.js · NestJS</span></span></div>
+              <div class="ss-link"><svg width="15" height="15"><use href="#i-chevdn"/></svg></div>
+              <div class="ss-node"><span class="ss-ic"><svg><use href="#i-db"/></svg></span><span><span class="ss-t">Data Layer</span><br><span class="ss-c">Prisma · PostgreSQL</span></span></div>
+            </div>
+            <div class="ss-chips">
+              <span class="chip cyan">Biome</span>
+              <span class="chip cyan">Swagger</span>
+              <span class="chip cyan">JWT</span>
+              <span class="chip cyan">RBAC</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 07 — SPRINT 2  (lifecycle wheel showcase)
+       ============================================================ -->
+  <section class="slide dark" id="s7">
+    <span class="dg"></span>
+    <div class="inner">
+      <header class="shead">
+        <div>
+          <span class="kicker">04 / Sprint 02 · Management</span>
+          <h2 class="title">Project &amp; Team Management</h2>
+        </div>
+        <span class="chip blue">SPRINT 2 / 4</span>
+      </header>
+      <span class="hair"></span>
+      <div class="sp-grid">
+        <div class="sp-list">
+          <div class="sp-item card a" style="--d:0"><span class="sp-idx">01</span><span class="sp-b"><span class="sp-t">Project Lifecycle Management</span></span></div>
+          <div class="sp-item card a" style="--d:1"><span class="sp-idx">02</span><span class="sp-b"><span class="sp-t">Role-Based Access Control</span></span></div>
+          <div class="sp-item card a" style="--d:2"><span class="sp-idx">03</span><span class="sp-b"><span class="sp-t">Contributor Applications</span></span></div>
+          <div class="sp-item card a" style="--d:3"><span class="sp-idx">04</span><span class="sp-b"><span class="sp-t">Project Discovery</span></span></div>
+          <div class="sp-item card a" style="--d:4"><span class="sp-idx">05</span><span class="sp-b"><span class="sp-t">Team Management</span></span></div>
+          <div class="sp-item card a" style="--d:5"><span class="sp-idx">06</span><span class="sp-b"><span class="sp-t">Project Owners &amp; Contributors</span></span></div>
+          <div class="sp-item card a" style="--d:6"><span class="sp-idx">07</span><span class="sp-b"><span class="sp-t">Admin Approval Workflow</span></span></div>
+        </div>
+
+        <div class="sp-show a" style="--d:1">
+          <div class="sp-show-hd">
+            <span class="ss-ic"><svg><use href="#i-org"/></svg></span>
+            <span class="ss-hd">Project lifecycle</span>
+            <span class="chip green ss-chip">DONE</span>
+          </div>
+          <div class="sp-show-bd">
+            <div class="wheel">
+              <svg class="lnb" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <g stroke="#00A6D6" stroke-opacity=".35" stroke-width=".3">
+                  <line x1="50" y1="50" x2="50" y2="16"/>
+                  <line x1="50" y1="50" x2="75.7" y2="30"/>
+                  <line x1="50" y1="50" x2="82" y2="60"/>
+                  <line x1="50" y1="50" x2="64" y2="84.5"/>
+                  <line x1="50" y1="50" x2="36" y2="84.5"/>
+                  <line x1="50" y1="50" x2="18" y2="60"/>
+                  <line x1="50" y1="50" x2="24.3" y2="30"/>
+                </g>
+              </svg>
+              <span class="ring"></span>
+              <div class="rnode a" style="--d:0;left:50%;top:16.7%"><span class="rn">01</span><span class="rt">LIFECYCLE</span></div>
+              <div class="rnode a" style="--d:1;left:75.7%;top:30%"><span class="rn">02</span><span class="rt">RBAC</span></div>
+              <div class="rnode a" style="--d:2;left:82%;top:60.2%"><span class="rn">03</span><span class="rt">APPLY</span></div>
+              <div class="rnode a" style="--d:3;left:64.3%;top:84.5%"><span class="rn">04</span><span class="rt">DISCOVER</span></div>
+              <div class="rnode a" style="--d:4;left:35.7%;top:84.5%"><span class="rn">05</span><span class="rt">TEAM</span></div>
+              <div class="rnode a" style="--d:5;left:18%;top:60.2%"><span class="rn">06</span><span class="rt">OWNERS</span></div>
+              <div class="rnode a" style="--d:6;left:24.3%;top:30%"><span class="rn">07</span><span class="rt">APPROVAL</span></div>
+              <div class="rhub a" style="--d:8">
+                <span class="rh-1">Sprint 02</span>
+                <span class="rh-2">Project &amp;<br>Team Lifecycle</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 08 — SPRINT 3  (kanban showcase)
+       ============================================================ -->
+  <section class="slide dark" id="s8">
+    <span class="dg"></span>
+    <div class="inner">
+      <header class="shead">
+        <div>
+          <span class="kicker">04 / Sprint 03 · Workspace</span>
+          <h2 class="title">Workspace &amp; Contributions</h2>
+        </div>
+        <span class="chip blue">SPRINT 3 / 4</span>
+      </header>
+      <span class="hair"></span>
+      <div class="sp-grid">
+        <div class="sp-list">
+          <div class="sp-item card a" style="--d:0"><span class="sp-idx">01</span><span class="sp-b"><span class="sp-t">Task Creation &amp; Assignment</span><span class="sp-c">Tasks created and assigned per project</span></span></div>
+          <div class="sp-item card a" style="--d:1"><span class="sp-idx">02</span><span class="sp-b"><span class="sp-t">GitHub Synchronization</span><span class="sp-c">Activity synced automatically</span></span></div>
+          <div class="sp-item card a" style="--d:2"><span class="sp-idx">03</span><span class="sp-b"><span class="sp-t">Kanban Task Tracking</span><span class="sp-c">To Do · In Progress · Done</span></span></div>
+          <div class="sp-item card a" style="--d:3"><span class="sp-idx">04</span><span class="sp-b"><span class="sp-t">GitHub Repository Connection</span><span class="sp-c">Repositories linked to projects</span></span></div>
+          <div class="sp-item card a" style="--d:4"><span class="sp-idx">05</span><span class="sp-b"><span class="sp-t">Project Workspace</span><span class="sp-c">Everything in one place</span></span></div>
+          <div class="sp-item card a" style="--d:5"><span class="sp-idx">06</span><span class="sp-b"><span class="sp-t">Task ↔ GitHub Contribution Link</span><span class="sp-c">Commits traced to tasks</span></span></div>
+        </div>
+
+        <div class="sp-show a" style="--d:1">
+          <div class="sp-show-hd">
+            <span class="ss-ic"><svg><use href="#i-kanban"/></svg></span>
+            <span class="ss-hd">Workspace · Kanban</span>
+            <span class="chip green ss-chip">DONE</span>
+          </div>
+          <div class="sp-show-bd">
+            <div class="kanban">
+              <div class="kcol">
+                <div class="k-hd">TO DO <i>01</i></div>
+                <div class="kcard"><span class="kd" style="background:var(--cyan)"></span>Backlog item</div>
+                <div class="kcard"><span class="kd" style="background:var(--cyan)"></span>Defined scope</div>
+                <div class="kcard ghost"><span class="kd" style="background:transparent"></span>Assigned task</div>
+              </div>
+              <div class="kcol">
+                <div class="k-hd">IN PROGRESS <i>02</i></div>
+                <div class="kcard"><span class="kd" style="background:var(--amber)"></span>Working on branch</div>
+                <div class="kcard ghost"><span class="kd" style="background:transparent"></span>Task ↔ commit linked</div>
+              </div>
+              <div class="kcol">
+                <div class="k-hd">DONE <i>03</i></div>
+                <div class="kcard"><span class="kd" style="background:var(--green)"></span>Merged Pull Request</div>
+                <div class="kcard"><span class="kd" style="background:var(--green)"></span>GitHub synced</div>
+              </div>
+            </div>
+            <div class="sync-row">
+              <span class="chip cyan">GitHub connected</span>
+              <span class="chip cyan">Repository linked</span>
+              <span class="chip cyan">Contribution ↔ task</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 09 — SPRINT 4  (verification flow showcase)
+       ============================================================ -->
+  <section class="slide dark" id="s9">
+    <span class="dg"></span>
+    <div class="inner">
+      <header class="shead">
+        <div>
+          <span class="kicker">04 / Sprint 04 · Verification</span>
+          <h2 class="title">Verification · Portfolio &amp; Showcase</h2>
+        </div>
+        <span class="chip blue">SPRINT 4 / 4</span>
+      </header>
+      <span class="hair"></span>
+      <div class="sp-grid">
+        <div class="sp-list">
+          <div class="sp-item card a" style="--d:0"><span class="sp-idx">01</span><span class="sp-b"><span class="sp-t">Task Submission for Review</span></span></div>
+          <div class="sp-item card a" style="--d:1"><span class="sp-idx">02</span><span class="sp-b"><span class="sp-t">Review &amp; Task Approval</span></span></div>
+          <div class="sp-item card a" style="--d:2"><span class="sp-idx">03</span><span class="sp-b"><span class="sp-t">Project Owner Notification</span></span></div>
+          <div class="sp-item card a" style="--d:3"><span class="sp-idx">04</span><span class="sp-b"><span class="sp-t">Contribution Tracking</span></span></div>
+          <div class="sp-item card a" style="--d:4"><span class="sp-idx">05</span><span class="sp-b"><span class="sp-t">Contributor &amp; Repository Information</span></span></div>
+          <div class="sp-item card a" style="--d:5"><span class="sp-idx">06</span><span class="sp-b"><span class="sp-t">Portfolio &amp; Public Showcase</span></span></div>
+        </div>
+
+        <div class="sp-show a" style="--d:1">
+          <div class="sp-show-hd">
+            <span class="ss-ic"><svg><use href="#i-award"/></svg></span>
+            <span class="ss-hd">Verification pipeline</span>
+            <span class="chip green ss-chip">DONE</span>
+          </div>
+          <div class="sp-show-bd">
+            <div class="ss-stack">
+              <div class="ss-node slim"><span class="ss-ic"><svg><use href="#i-userplus"/></svg></span><span><span class="ss-t">SUBMIT</span><br><span class="ss-c">Task submission for review</span></span></div>
+              <div class="ss-link"><svg width="15" height="15"><use href="#i-chevdn"/></svg></div>
+              <div class="ss-node slim"><span class="ss-ic"><svg><use href="#i-eye"/></svg></span><span><span class="ss-t">REVIEW</span><br><span class="ss-c">Review &amp; task approval</span></span></div>
+              <div class="ss-link"><svg width="15" height="15"><use href="#i-chevdn"/></svg></div>
+              <div class="ss-node slim hl"><span class="ss-ic"><svg><use href="#i-shieldcheck"/></svg></span><span><span class="ss-t">VERIFIED</span><br><span class="ss-c">Contribution tracked &amp; showcased</span></span></div>
+            </div>
+            <div class="ss-chips">
+              <span class="chip cyan">Contribution tracking</span>
+              <span class="chip cyan">Owner notified</span>
+              <span class="chip cyan">Portfolio live</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 10 — FROM CODE TO FELCLOUD PRODUCTION
+       (CI/CD contribution + production architecture + secure by design)
+       ============================================================ -->
+  <section class="slide dark sdev" id="s10">
+    <span class="dg"></span>
+    <span class="orb orb-a"></span>
+    <span class="orb orb-b"></span>
+    <div class="inner">
+      <header class="shead">
+        <div>
+          <span class="kicker">05 / Contribution · Cloud &amp; DevOps</span>
+          <h2 class="title">From Code to FelCloud Production</h2>
+        </div>
+        <p class="lead">Designed and delivered the cloud architecture, CI/CD pipeline and production operations.</p>
+      </header>
+      <span class="hair"></span>
+
+      <div class="mega">
+        <!-- Band 1 · CI/CD pipeline -->
+        <div class="band a" style="--d:0">
+          <div class="band-l">CI / CD Pipeline</div>
+          <div class="ci-rows">
+            <div class="ci-row">
+              <div class="ci-st"><span class="ci-ic"><svg><use href="#i-github"/></svg></span><span>Pull request</span></div>
+              <span class="ci-arr"><svg width="13" height="12"><use href="#i-chevrn"/></svg></span>
+              <div class="ci-st"><span class="ci-ic"><svg><use href="#i-eye"/></svg></span><span>Code review &amp; validation</span></div>
+              <span class="ci-arr"><svg width="13" height="12"><use href="#i-chevrn"/></svg></span>
+              <div class="ci-st"><span class="ci-ic"><svg><use href="#i-gauge"/></svg></span><span>Quality gate</span></div>
+              <span class="ci-arr"><svg width="13" height="12"><use href="#i-chevrn"/></svg></span>
+              <div class="ci-st"><span class="ci-ic"><svg><use href="#i-checkb"/></svg></span><span>Tests · build &amp; Compose</span></div>
+              <span class="ci-arr"><svg width="13" height="12"><use href="#i-chevrn"/></svg></span>
+              <div class="ci-st"><span class="ci-ic"><svg><use href="#i-cube"/></svg></span><span>GHCR image</span></div>
+            </div>
+            <div class="ci-turn"><svg width="16" height="16"><use href="#i-chevdn"/></svg><span class="ct-text">Immutable · tagged · versioned</span><svg width="16" height="16"><use href="#i-chevdn"/></svg></div>
+            <div class="ci-row">
+              <div class="ci-st"><span class="ci-ic"><svg><use href="#i-layers"/></svg></span><span>Immutable, tagged containers</span></div>
+              <span class="ci-arr"><svg width="13" height="12"><use href="#i-chevrn"/></svg></span>
+              <div class="ci-st"><span class="ci-ic"><svg><use href="#i-rocket"/></svg></span><span>FelCloud deploy</span></div>
+              <span class="ci-arr"><svg width="13" height="12"><use href="#i-chevrn"/></svg></span>
+              <div class="ci-st"><span class="ci-ic"><svg><use href="#i-refresh"/></svg></span><span>Automated rollout &amp; health gate</span></div>
+              <span class="ci-arr"><svg width="13" height="12"><use href="#i-chevrn"/></svg></span>
+              <div class="ci-st"><span class="ci-ic"><svg><use href="#i-server"/></svg></span><span>Operate</span></div>
+              <span class="ci-arr"><svg width="13" height="12"><use href="#i-chevrn"/></svg></span>
+              <div class="ci-st ok"><span class="ci-ic"><svg><use href="#i-chart"/></svg></span><span>Monitor · back up &amp; recover</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Band 2 · Production architecture -->
+        <div class="band a" style="--d:1">
+          <div class="band-l">Production Architecture<span style="opacity:.65;margin-left:8px">Public entry · private application and database</span></div>
+          <div class="arc-chain">
+            <div class="anode"><span class="an-top"><span class="an-ic"><svg><use href="#i-users"/></svg></span><span class="an-t">Internet users</span></span><span class="an-s">Public entry point</span></div>
+            <span class="an-arr"><svg width="14" height="13"><use href="#i-chevrn"/></svg></span>
+            <div class="anode"><span class="an-top"><span class="an-ic"><svg><use href="#i-globe"/></svg></span><span class="an-t">Public endpoint :443</span></span><span class="an-s">HTTPS ingress</span><span class="an-tag g">HTTPS</span></div>
+            <span class="an-arr"><svg width="14" height="13"><use href="#i-chevrn"/></svg></span>
+            <div class="anode"><span class="an-top"><span class="an-ic"><svg><use href="#i-shield"/></svg></span><span class="an-t">Bastion + Caddy</span></span><span class="an-s">Secure ingress and SSH</span><span class="an-tag g">SECURE SSH</span></div>
+            <span class="an-arr"><svg width="14" height="13"><use href="#i-chevrn"/></svg></span>
+            <div class="anode"><span class="an-top"><span class="an-ic"><svg><use href="#i-layers"/></svg></span><span class="an-t">Load balancer</span></span><span class="an-s">Health-checked routing</span></div>
+            <span class="an-arr"><svg width="14" height="13"><use href="#i-chevrn"/></svg></span>
+            <div class="private-grp">
+              <div class="anode"><span class="an-top"><span class="an-ic"><svg><use href="#i-code"/></svg></span><span class="an-t">Application VM</span></span><span class="an-s">Next.js + NestJS</span><span class="an-tag a">PRIVATE APP</span></div>
+              <span class="h-arrow" aria-hidden="true"></span>
+              <div class="anode"><span class="an-top"><span class="an-ic"><svg><use href="#i-db"/></svg></span><span class="an-t">Database VM</span></span><span class="an-s">PostgreSQL 16</span><span class="an-tag a">PRIVATE DB</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Band 3 · Secure by design -->
+        <div class="band a" style="--d:2">
+          <div class="band-l">Secure by Design</div>
+          <div class="sec-row">
+            <div class="sec-minis">
+              <div class="mini-sec"><span class="ms-ic"><svg><use href="#i-lock"/></svg></span><span>Private app + DB</span></div>
+              <div class="mini-sec"><span class="ms-ic"><svg><use href="#i-server"/></svg></span><span>SSH via bastion</span></div>
+              <div class="mini-sec"><span class="ms-ic"><svg><use href="#i-key"/></svg></span><span>Secrets protected</span></div>
+            </div>
+            <div class="dstack">
+              <div class="stack-line">
+                <span class="sl-flag">Delivery Stack</span>
+                <span class="chip">GitHub Actions</span><span class="chip">Docker / GHCR</span><span class="chip"><img class="stack-logo" src="felcloud-logo.png" alt="FelCloud">FelCloud</span><span class="chip">Prometheus</span><span class="chip">PostgreSQL</span>
+              </div>
+              <div class="dresult"><svg><use href="#i-check"/></svg>One connected workflow from the developers' commits to an operational cloud platform.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 11 — PRODUCTION EVIDENCE + CHALLENGES SOLVED
+       ============================================================ -->
+  <section class="slide dark" id="s11">
+    <span class="dg"></span>
+    <div class="inner">
+      <header class="shead">
+        <div>
+          <span class="kicker">06 / Evidence</span>
+          <h2 class="title">Production Evidence &amp; Reliability</h2>
+        </div>
+      </header>
+      <span class="hair"></span>
+
+      <div class="ev-cols">
+        <div class="band-l a" style="--d:0">Real Delivery Evidence</div>
+        <div class="ev-strip a" style="--d:0">
+          <figure class="evshot"><img src="CI_CD.jpeg" alt="CI/CD pipeline result"><span class="sh-cap"><b>CI / CD</b><span class="ev-status">PASSED</span></span></figure>
+          <figure class="evshot"><img src="MONITOR.jpeg" alt="Monitoring dashboard"><span class="sh-cap"><b>MONITOR</b><span class="ev-status">PASSED</span></span></figure>
+          <figure class="evshot"><img src="RECOVERY.jpeg" alt="Recovery verification"><span class="sh-cap"><b>RECOVERY</b><span class="ev-status">PASSED</span></span></figure>
+        </div>
+
+        <div class="ch-band">
+          <div class="pcol a" style="--d:1">
+            <div class="pair-card prob card"><span class="pc-ic"><svg><use href="#i-bell"/></svg></span><span class="pc-l">CHALLENGE</span><span class="pc-t">Environment drift</span></div>
+            <span class="p-arr"><svg width="14" height="14"><use href="#i-chevdn"/></svg></span>
+            <div class="pair-card sol card"><span class="pc-ic"><svg><use href="#i-layers"/></svg></span><span class="pc-l">SOLUTION</span><span class="pc-t">Versioned images + Docker Compose</span></div>
+          </div>
+          <div class="pcol a" style="--d:2">
+            <div class="pair-card prob card"><span class="pc-ic"><svg><use href="#i-globe"/></svg></span><span class="pc-l">CHALLENGE</span><span class="pc-t">Secure remote delivery</span></div>
+            <span class="p-arr"><svg width="14" height="14"><use href="#i-chevdn"/></svg></span>
+            <div class="pair-card sol card"><span class="pc-ic"><svg><use href="#i-lock"/></svg></span><span class="pc-l">SOLUTION</span><span class="pc-t">Private network + bastion access</span></div>
+          </div>
+          <div class="pcol a" style="--d:3">
+            <div class="pair-card prob card"><span class="pc-ic"><svg><use href="#i-server"/></svg></span><span class="pc-l">CHALLENGE</span><span class="pc-t">Operational continuity</span></div>
+            <span class="p-arr"><svg width="14" height="14"><use href="#i-chevdn"/></svg></span>
+            <div class="pair-card sol card"><span class="pc-ic"><svg><use href="#i-heart"/></svg></span><span class="pc-l">SOLUTION</span><span class="pc-t">Health checks, alerts and backups</span></div>
+          </div>
+          <div class="final-out slim a" style="--d:4">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span class="fo-1">Final Outcome</span>
+              <span class="fo-2">A live, repeatable, observable and recoverable TalentHub platform.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-strip">
+        <div class="kpi card a" style="--d:5"><span class="kpi-ic"><svg><use href="#i-cube"/></svg></span><span class="k-num">10</span><span class="k-body"><span class="k-ln">PROD · CONTAINERS</span><span class="k-c">delivered</span></span></div>
+        <div class="kpi card a" style="--d:6"><span class="kpi-ic"><svg><use href="#i-terminal"/></svg></span><span class="k-num">17</span><span class="k-body"><span class="k-ln">INFRA · SCRIPTS</span><span class="k-c">delivered</span></span></div>
+        <div class="kpi card a" style="--d:7"><span class="kpi-ic"><svg><use href="#i-gauge"/></svg></span><span class="k-num">7</span><span class="k-body"><span class="k-ln">MONITORING · FILES</span><span class="k-c">delivered</span></span></div>
+        <div class="kpi card a" style="--d:8"><span class="kpi-ic"><svg><use href="#i-globe"/></svg></span><span class="k-num">200</span><span class="k-body"><span class="k-ln">HTTPS STATUS · LIVE</span><span class="k-c">delivered</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 12 — PROJECT TIMELINE  (roadmap · Steps 100%)
+       ============================================================ -->
+  <section class="slide dark" id="s12">
+    <span class="dg"></span>
+    <div class="inner">
+      <header class="shead">
+        <div>
+          <span class="kicker">06 / Milestones · Steps 100%</span>
+          <h2 class="title">Project Timeline</h2>
+        </div>
+        <p class="lead">From foundation to a deployed, beta-tested platform.</p>
+      </header>
+      <span class="hair"></span>
+      <div class="tl-wrap">
+        <div class="roadmap">
+          <svg class="rmline" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
+            <line x1="0" y1="20" x2="1180" y2="20" stroke="#00A6D6" stroke-width="2" stroke-dasharray="7 9" stroke-linecap="round" opacity=".8"/>
+            <path d="M1172 14l10 6 -10 6" fill="none" stroke="#7FD4EE" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="rmlab l">Steps 100%</span>
+
+          <div class="rm-stop a" style="--d:0;left:15%">
+            <span class="rmdot">25<small>%</small></span>
+            <div class="rm-card up card"><div class="rm-t">SPRINT 1</div><div class="rm-c">Auth · Database Schema and CI</div></div>
+          </div>
+          <div class="rm-stop a" style="--d:1;left:38.5%">
+            <span class="rmdot">50<small>%</small></span>
+            <div class="rm-card dn card"><div class="rm-t">SPRINT 2</div><div class="rm-c">Projects · Roles · Discovery &amp; Applications</div></div>
+          </div>
+          <div class="rm-stop a" style="--d:2;left:62%">
+            <span class="rmdot">75<small>%</small></span>
+            <div class="rm-card up card"><div class="rm-t">SPRINT 3</div><div class="rm-c">Workspace · Tasks · Verification · Portfolio &amp; Showcase</div></div>
+          </div>
+          <div class="rm-stop a" style="--d:3;left:85.5%">
+            <span class="rmdot" style="box-shadow:0 0 0 7px rgba(18,161,90,.18),0 0 30px rgba(18,161,90,.55);border-color:rgba(88,214,154,.5);background:linear-gradient(135deg,#12A15A,#35C87D)">
+              <svg width="18" height="18"><use href="#i-flag"/></svg>
+            </span>
+            <div class="rm-card dn card"><div class="rm-t">SPRINT 4</div><div class="rm-c">Deploy &amp; Beta Test</div></div>
+          </div>
+          <span class="rmlab r">Done</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 13 — PERSPECTIVES  (future horizon)
+       ============================================================ -->
+  <section class="slide dark" id="s13">
+    <span class="dg"></span>
+    <div class="inner">
+      <header class="shead">
+        <div>
+          <span class="kicker">07 / Future</span>
+          <h2 class="title">Perspectives</h2>
+        </div>
+        <p class="lead">Looking ahead — what's next for TalentHub.</p>
+      </header>
+      <span class="hair"></span>
+      <div class="fut">
+        <span class="fut-sun"><i></i><i></i><i></i></span>
+        <span class="fut-moon"></span>
+        <span class="fut-shoot"></span>
+        <div class="fut-glow"></div>
+        <svg class="fpath" viewBox="0 0 1200 400" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="pgrad" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#3FD98F"/><stop offset=".5" stop-color="#00A6D6"/><stop offset="1" stop-color="#7FD4EE"/>
+            </linearGradient>
+          </defs>
+          <path d="M90 330 C 250 310 380 268 500 224 C 620 182 760 152 950 88" fill="none"
+                stroke="#00A6D6" stroke-width="16" stroke-linecap="round" opacity=".13" filter="blur(5px)"/>
+          <path d="M90 330 C 250 310 380 268 500 224 C 620 182 760 152 950 88" fill="none"
+                stroke="url(#pgrad)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="2 10"/>
+          <path d="M90 330 C 250 310 380 268 500 224 C 620 182 760 152 950 88" fill="none"
+                stroke="#EAF6FF" stroke-width="1" stroke-opacity=".35" stroke-linecap="round" stroke-dasharray="1 11"/>
+          <path d="M938 80l20 10 -16 22" fill="none" stroke="#7FD4EE" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="fut-hill">
+          <svg viewBox="0 0 1200 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+            <path d="M0 210 L90 180 160 200 260 150 340 190 430 140 520 175 620 120 720 165 820 135 920 178 1010 150 1100 185 1200 160 V260 H0 Z" fill="rgba(6,40,64,.5)"/>
+            <path d="M0 232 L120 210 240 225 360 185 470 220 600 175 700 205 820 185 940 215 1060 195 1200 215 V260 H0 Z" fill="rgba(4,27,46,.62)"/>
+            <g fill="#7FD4EE" opacity=".5">
+              <rect x="106" y="202" width="3" height="5" rx="1"/><rect x="118" y="196" width="3" height="5" rx="1"/><rect x="130" y="203" width="3" height="5" rx="1"/>
+              <rect x="224" y="218" width="3" height="5" rx="1"/><rect x="236" y="212" width="3" height="5" rx="1"/>
+              <rect x="352" y="172" width="3" height="5" rx="1"/><rect x="364" y="178" width="3" height="5" rx="1"/><rect x="376" y="170" width="3" height="5" rx="1"/>
+              <rect x="590" y="163" width="3" height="5" rx="1"/><rect x="602" y="158" width="3" height="5" rx="1"/><rect x="614" y="165" width="3" height="5" rx="1"/>
+              <rect x="692" y="192" width="3" height="5" rx="1"/><rect x="706" y="186" width="3" height="5" rx="1"/><rect x="718" y="193" width="3" height="5" rx="1"/>
+              <rect x="812" y="170" width="3" height="5" rx="1"/><rect x="824" y="176" width="3" height="5" rx="1"/>
+              <rect x="932" y="202" width="3" height="5" rx="1"/><rect x="944" y="196" width="3" height="5" rx="1"/><rect x="956" y="204" width="3" height="5" rx="1"/>
+              <rect x="1052" y="180" width="3" height="5" rx="1"/><rect x="1064" y="186" width="3" height="5" rx="1"/>
+            </g>
+          </svg>
+        </div>
+        <span class="star" style="left:8%;top:62%"></span>
+        <span class="star" style="left:24%;top:34%"></span>
+        <span class="star" style="left:46%;top:20%"></span>
+        <span class="star" style="left:68%;top:42%"></span>
+        <span class="star" style="left:88%;top:18%"></span>
+        <span class="star" style="left:35%;top:12%"></span>
+        <span class="star" style="left:58%;top:7%"></span>
+        <span class="star big" style="left:13%;top:31%"></span>
+
+        <div class="fut-node a" style="--d:0;left:17%;top:74%">
+          <span class="fu-ic"><svg><use href="#i-award"/></svg></span>
+          <div class="fu-card">
+            <span class="fu-hor">Near · Growth</span>
+            <div class="fu-t">Gamification &amp; Rewards</div>
+            <div class="fu-c">Badges, levels, challenges &amp; leaderboards.</div>
+          </div>
+        </div>
+        <div class="fut-node a" style="--d:1;left:50%;top:52%">
+          <span class="fu-ic"><svg><use href="#i-phone"/></svg></span>
+          <div class="fu-card">
+            <span class="fu-hor">Mid · Access</span>
+            <div class="fu-t">Mobile App</div>
+            <div class="fu-c">Mobile project, task &amp; GitHub activity management.</div>
+          </div>
+        </div>
+        <div class="fut-node a" style="--d:2;left:83%;top:26%">
+          <span class="fu-ic"><svg><use href="#i-code"/></svg></span>
+          <div class="fu-card">
+            <span class="fu-hor">Long · Trust</span>
+            <div class="fu-t">Skill Assessment</div>
+            <div class="fu-c">Quizzes, coding challenges &amp; verified skill badges.</div>
+          </div>
+        </div>
+
+        <div class="fut-horizon">
+          <svg><use href="#i-rocket"/></svg>
+          <span>THE FUTURE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 14 — DEMO  (dark, dramatic)
+       ============================================================ -->
+  <section class="slide dark sdemo" id="s14">
+    <span class="orb orb-a"></span>
+    <span class="dg"></span>
+    <div class="inner">
+      <div class="a" style="--d:0">
+        <span class="kicker">08 / Demo</span>
+        <h2 class="title" style="margin-top:12px">DEMO</h2>
+      </div>
+      <figure class="demoframe a" style="--d:1">
+        <span class="live-chip"><i></i>LIVE</span>
+        <video class="demovid" controls autoplay muted loop playsinline preload="metadata" src="demooooooo.mp4">
+          Your browser does not support embedded video.
+        </video>
+      </figure>
+      <p class="democap a" style="--d:2">Live Platform Walkthrough · ~4:40</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SLIDE 15 — THANK YOU  (dark, closing)
+       ============================================================ -->
+  <section class="slide dark sthanks" id="s15">
+    <span class="dg"></span>
+    <span class="orb orb-a"></span>
+    <div class="inner">
+      <span class="s1-kicker a" style="--d:0">IEEE TalentHub · Final Defense</span>
+      <h1 class="s1-title a" style="--d:1">THANK&nbsp;YOU</h1>
+      <p class="s1-sub a" style="--d:2">Your Platform to <b>Create</b>, <b>Innovate</b> and <b>Shine</b>.</p>
+      <div class="qa-clip a" style="--d:3">Questions &amp; Discussion</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============================================================
+     HUD — progress, navigation, counter, dots, fullscreen
+     ============================================================ -->
+<div class="progress" aria-hidden="true"><i id="bar"></i></div>
+<div id="hint">← → navigate &nbsp;·&nbsp; F fullscreen</div>
+<div class="hud" role="toolbar" aria-label="Presentation controls">
+  <button class="nav-btn" id="prevBtn" aria-label="Previous slide"><svg><use href="#i-chevrn" style="transform:rotate(180deg)"/></svg></button>
+  <div class="dots" id="dots" aria-label="Jump to slide"></div>
+  <span id="counter">01 / 15</span>
+  <button class="nav-btn" id="fsBtn" aria-label="Toggle fullscreen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
+  <button class="nav-btn" id="nextBtn" aria-label="Next slide"><svg><use href="#i-chevrn"/></svg></button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var deck = document.getElementById("deck");
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var total = slides.length;
+  var cur = 0;
+  var bar = document.getElementById("bar");
+  var counter = document.getElementById("counter");
+  var dotsWrap = document.getElementById("dots");
+  var prevBtn = document.getElementById("prevBtn");
+  var nextBtn = document.getElementById("nextBtn");
+  var fsBtn = document.getElementById("fsBtn");
+  var hint = document.getElementById("hint");
+  var dotEls = [];
+
+  for (var i = 0; i < total; i++) {
+    var d = document.createElement("span");
+    d.title = "Go to slide " + (i + 1);
+    if (i === 0) d.className = "on";
+    d.addEventListener("click", (function(n){ return function(){ go(n); }; })(i));
+    dotsWrap.appendChild(d);
+    dotEls.push(d);
+  }
+
+  function sync(){
+    bar.style.width = (cur / (total - 1)) * 100 + "%";
+    counter.textContent = String(cur + 1).padStart(2, "0") + " / " + total;
+    for (var i = 0; i < total; i++) dotEls[i].className = (i === cur) ? "on" : "";
+    prevBtn.disabled = (cur === 0);
+    nextBtn.disabled = (cur === total - 1);
+    hint.classList.add("off");
+  }
+
+  function go(n){
+    if (n < 0 || n >= total || n === cur) return;
+    var dir = (n > cur) ? "next" : "prev";
+    var prev = slides[cur];
+    var nxt = slides[n];
+    var exitCls = (dir === "next") ? "exit-left" : "exit-right";
+    var enterCls = (dir === "next") ? "enter-right" : "enter-left";
+    prev.classList.remove("active");
+    prev.classList.add("leaving", exitCls);
+    setTimeout(function(){
+      prev.classList.remove("leaving", "exit-left", "exit-right");
+    }, 460);
+    nxt.classList.remove("leaving", "exit-left", "exit-right", "enter-right", "enter-left");
+    nxt.classList.add("active", enterCls);
+    cur = n;
+    sync();
+  }
+
+  function next(){ go(cur + 1); }
+  function back(){ go(cur - 1); }
+
+  document.addEventListener("keydown", function(e){
+    if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { e.preventDefault(); next(); }
+    else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); back(); }
+    else if (e.key === "Home") { e.preventDefault(); go(0); }
+    else if (e.key === "End") { e.preventDefault(); go(total - 1); }
+    else if (e.key === "f" || e.key === "F") { toggleFs(); }
+    else if (e.key === "Escape") { if (document.fullscreenElement) document.exitFullscreen(); }
+  });
+
+  function toggleFs(){
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (deck.requestFullscreen) deck.requestFullscreen();
+  }
+  fsBtn.addEventListener("click", toggleFs);
+
+  prevBtn.addEventListener("click", back);
+  nextBtn.addEventListener("click", next);
+
+  var px = null, py = null, pt = 0;
+  deck.addEventListener("pointerdown", function(e){
+    px = e.clientX; py = e.clientY; pt = Date.now();
+  }, {passive:true});
+  deck.addEventListener("pointerup", function(e){
+    if (px === null) return;
+    var dx = e.clientX - px, dy = e.clientY - py;
+    var dt = Date.now() - pt;
+    if (dt < 700 && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) next(); else back();
+    }
+    px = null; py = null;
+  }, {passive:true});
+  deck.addEventListener("pointercancel", function(){ px = null; py = null; });
+
+  setTimeout(function(){ hint.classList.add("off"); }, 7000);
+
+  sync();
+})();
+</script>
+</body>
+</html>
